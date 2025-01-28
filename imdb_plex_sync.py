@@ -63,15 +63,18 @@ def main(
         item.key.replace("/library/metadata/", "") for item in account.watchlist()
     )
 
-    for key in imdb_keys - plex_keys:
-        video = _find_by_plex_guid(account, key)
-        logger.info("+ %s", video.title)
-        video.addToWatchlist()
+    try:
+        for key in imdb_keys - plex_keys:
+            video = _find_by_plex_guid(account, key)
+            logger.info("+ %s", video.title)
+            video.addToWatchlist()
+    except Exception:
+        pass
 
-    for key in plex_keys - imdb_keys:
-        video = _find_by_plex_guid(account, key)
-        logger.info("- %s", video.title)
-        video.removeFromWatchlist()
+    # for key in plex_keys - imdb_keys:
+    #     video = _find_by_plex_guid(account, key)
+    #     logger.info("- %s", video.title)
+    #     video.removeFromWatchlist()
 
 
 def _fetch_imdb_watchlist(url: str) -> list[str]:
